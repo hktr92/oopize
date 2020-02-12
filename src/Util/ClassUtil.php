@@ -163,4 +163,18 @@ final class ClassUtil {
     public static function hasMethod($instance, string $method): bool {
         return method_exists($instance, $method);
     }
+
+    /**
+     * @param object $instance
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public static function access($instance, string $property) {
+        if (false === self::hasProperty($instance, $property)) {
+            return null;
+        }
+
+        return $instance->{$property};
+    }
 }
