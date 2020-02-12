@@ -12,6 +12,8 @@ namespace Oopize\Util;
 
 use Doctrine\Common\Inflector\Inflector;
 use function class_exists;
+use function method_exists;
+use function property_exists;
 
 /**
  * Class ClassUtil
@@ -140,5 +142,25 @@ final class ClassUtil {
         $classified = self::classify($column);
 
         return "is{$classified}";
+    }
+
+    /**
+     * @param object $instance
+     * @param string $property
+     *
+     * @return bool
+     */
+    public static function hasProperty($instance, string $property): bool {
+        return property_exists($instance, $property);
+    }
+
+    /**
+     * @param object $instance
+     * @param string $method
+     *
+     * @return bool
+     */
+    public static function hasMethod($instance, string $method): bool {
+        return method_exists($instance, $method);
     }
 }
