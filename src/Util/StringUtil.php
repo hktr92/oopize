@@ -35,6 +35,14 @@ use const STR_PAD_BOTH;
  * @since   0.1
  */
 final class StringUtil {
+    public const
+        OP_GT = '>',
+        OP_GTE = '>=',
+        OP_LT = '<',
+        OP_LTE = '<=',
+        OP_EQ = '==',
+        OP_NEQ = '!=';
+
     /**
      * @var string
      */
