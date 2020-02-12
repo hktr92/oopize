@@ -18,6 +18,12 @@ use function gettype;
  * @since   0.1
  */
 final class VarUtil {
+    public const
+        TYPE_STRING = 'string',
+        TYPE_INT = 'int',
+        TYPE_FLOAT = 'float',
+        TYPE_BOOL = 'bool';
+
     /**
      * @param mixed $var
      *
@@ -35,5 +41,35 @@ final class VarUtil {
      */
     public static function isTypeOf($var, string $expectedType) {
         return $expectedType === self::getType($var);
+    }
+
+    /**
+     * @param mixed $var
+     *
+     * @return string
+     */
+    public static function castToString($var): string {
+        return self::cast($var, self::TYPE_STRING);
+    }
+
+    /**
+     * @param mixed  $var
+     * @param string $type
+     *
+     * @return mixed
+     */
+    private static function cast($var, string $type) {
+        switch ($type) {
+            case self::TYPE_STRING:
+                return (string)$var;
+            case self::TYPE_INT:
+                return (int)$var;
+            case self::TYPE_FLOAT:
+                return (float)$var;
+            case self::TYPE_BOOL:
+                return (bool)$var;
+            default:
+                return $var;
+        }
     }
 }
