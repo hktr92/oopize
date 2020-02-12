@@ -10,7 +10,10 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use function is_dir;
+use function rmdir;
 
 /**
  * Class DirUtil
@@ -25,5 +28,42 @@ final class DirUtil {
      */
     public static function isValid(string $path): bool {
         return is_dir($path);
+    }
+
+    /**
+     * @param string $path
+     * @param bool   $recursive
+     */
+    public static function remove(string $path, bool $recursive = true): void {
+        if (false === $recursive) {
+            rmdir($path);
+
+            return;
+        }
+
+        foreach (self::getFiles($path) as $file) {
+            if ($file->isDir()) {
+                self::remove($file->getRealPath(), false);
+            } else {
+                FileUtil::remove($file->getRealPath());
+            }
+        }
+
+        self::remove($path, false);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return iterable
+     */
+    public static function getFiles(string $path): iterable {
+        return new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(
+                $path,
+                RecursiveDirectoryIterator::SKIP_DOTS
+            ),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
     }
 }

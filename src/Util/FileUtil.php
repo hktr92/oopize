@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use function file;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
+use function unlink;
 
 /**
  * Class FsUtil
@@ -32,8 +34,16 @@ final class FileUtil {
             ?: null;
     }
 
-    public static function readLines(): ArrayUtil {
-
+    /**
+     * @param string $file
+     *
+     * @return ArrayUtil
+     */
+    public static function readLines(string $file): ArrayUtil {
+        return new ArrayUtil(
+            file($file)
+                ?: []
+        );
     }
 
     /**
@@ -51,5 +61,12 @@ final class FileUtil {
      */
     public static function exists(string $path): bool {
         return file_exists($path);
+    }
+
+    /**
+     * @param string $file
+     */
+    public static function remove(string $file): void {
+        unlink($file);
     }
 }
