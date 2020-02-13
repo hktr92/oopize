@@ -24,6 +24,7 @@ use function array_keys;
 use function array_map;
 use function array_merge;
 use function array_push;
+use function array_unique;
 use function array_values;
 use function count;
 use function end;
@@ -351,6 +352,13 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
     public function last() {
         return end($this->data)
             ?: null;
+    }
+
+    /**
+     * @return ArrayUtil
+     */
+    public function getUnique(): ArrayUtil {
+        return new self(array_unique($this->data));
     }
 
     /**
