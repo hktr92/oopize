@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Oopize\Util;
 
 use function gettype;
+use function is_null;
 
 /**
  * Class VarUtil
@@ -31,6 +32,15 @@ final class VarUtil {
      */
     public static function getType($var): string {
         return gettype($var);
+    }
+
+    /**
+     * @param mixed $var
+     *
+     * @return bool
+     */
+    public static function isNull($var): bool {
+        return is_null($var);
     }
 
     /**
