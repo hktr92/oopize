@@ -35,12 +35,17 @@ final class VarUtil {
     }
 
     /**
+     * calling empty() is not advised here as the target is to have nullable value in database (e.g. 'someCount' => 0;
+     * empty(0) returns true in this case)
+     *
      * @param mixed $var
      *
      * @return bool
      */
     public static function isNull($var): bool {
-        return is_null($var);
+        return is_null($var)
+            || '' == $var
+            || 'null' == $var;
     }
 
     /**
