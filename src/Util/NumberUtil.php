@@ -11,6 +11,8 @@ declare(strict_types=1);
 namespace Oopize\Util;
 
 use InvalidArgumentException;
+use function is_float;
+use function is_int;
 use function number_format;
 use function round;
 
@@ -97,5 +99,33 @@ final class NumberUtil {
      */
     public static function round($number, int $precision = 2): float {
         return round($number, $precision);
+    }
+
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
+    public static function isInteger($var): bool {
+        return is_int($var);
+    }
+
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
+    public static function isFloat($var): bool {
+        return is_float($var);
+    }
+
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
+    public static function isNumber($var): bool {
+        return self::isInteger($var)
+            || self::isFloat($var);
     }
 }
