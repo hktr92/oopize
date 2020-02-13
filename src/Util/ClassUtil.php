@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Oopize\Util;
 
 use Doctrine\Common\Inflector\Inflector;
+use ReflectionClass;
 use function class_exists;
 use function method_exists;
 use function property_exists;
@@ -176,5 +177,34 @@ final class ClassUtil {
         }
 
         return $instance->{$property};
+    }
+
+    /**
+     * @param string $class
+     * @param array  $args
+     *
+     * @return object|null
+     *
+     * @throws \ReflectionException
+     */
+    public static function makeInstance(string $class, array $args = []) {
+        if (false === self::exists($class)) {
+            return null;
+        }
+
+        $Class = new ReflectionClass($class);
+
+        if ($Class->isAbstract()) {
+            return null;
+        }
+
+        $Constructor = $Class->getMethod('__construct');
+
+        if (false === $Constructor->isPublic()) {
+            return null;
+        }
+
+
+        return $Class->newInstance($args);
     }
 }
