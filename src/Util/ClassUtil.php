@@ -13,6 +13,7 @@ namespace Oopize\Util;
 use Doctrine\Common\Inflector\Inflector;
 use ReflectionClass;
 use function class_exists;
+use function get_class;
 use function method_exists;
 use function property_exists;
 
@@ -29,6 +30,15 @@ final class ClassUtil {
      */
     public static function exists(string $class): bool {
         return class_exists($class);
+    }
+
+    /**
+     * @param $object
+     *
+     * @return string
+     */
+    public static function getName($object): string {
+        return get_class($object);
     }
 
     /**
