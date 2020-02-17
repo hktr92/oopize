@@ -381,4 +381,16 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
     public function toArray(): array {
         return $this->data;
     }
+
+    /**
+     * @param Closure $callback
+     * @param object  $bindTo
+     *
+     * @return ArrayUtil
+     */
+    public function filter(Closure $callback, $bindTo): ArrayUtil {
+        $processed = array_filter($this->data, $this->bindCallback($callback, $bindTo));
+
+        return new self($processed);
+    }
 }
