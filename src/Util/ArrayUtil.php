@@ -362,6 +362,13 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
     }
 
     /**
+     * @return ArrayUtil
+     */
+    public function getKeys(): ArrayUtil {
+        return new self(array_keys($this->data));
+    }
+
+    /**
      * @param string $output
      */
     public function toJsonFile(string $output): void {
