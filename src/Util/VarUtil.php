@@ -12,6 +12,7 @@ namespace Oopize\Util;
 
 use function gettype;
 use function is_null;
+use function is_object;
 
 /**
  * Class VarUtil
@@ -46,6 +47,15 @@ final class VarUtil {
         return is_null($var)
             || '' == $var
             || 'null' == $var;
+    }
+
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
+    public static function isObject($var): bool {
+        return is_object($var);
     }
 
     /**
