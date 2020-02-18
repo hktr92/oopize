@@ -23,6 +23,7 @@ use function array_key_exists;
 use function array_keys;
 use function array_map;
 use function array_merge;
+use function array_pop;
 use function array_push;
 use function array_unique;
 use function array_values;
@@ -31,6 +32,7 @@ use function end;
 use function explode;
 use function in_array;
 use function is_array;
+use function join;
 use function reset;
 use const JSON_ERROR_NONE;
 
@@ -383,6 +385,15 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
     }
 
     /**
+     * @param string $delimiter
+     *
+     * @return string
+     */
+    public function toString(string $delimiter = ''): string {
+        return join($delimiter, $this->toArray());
+    }
+
+    /**
      * @return array
      */
     public function toArray(): array {
@@ -399,5 +410,14 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
         $processed = array_filter($this->data, $this->bindCallback($callback, $bindTo));
 
         return new self($processed);
+    }
+
+    /**
+     * @return ArrayUtil
+     */
+    public function pop(): ArrayUtil {
+        array_pop($this->toArray());
+
+        return new self($this->toArray());
     }
 }

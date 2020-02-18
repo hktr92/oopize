@@ -15,6 +15,7 @@ use InvalidArgumentException;
 use function dechex;
 use function is_float;
 use function is_int;
+use function log;
 use function mt_rand;
 use function number_format;
 use function random_int;
@@ -159,5 +160,23 @@ final class NumberUtil {
      */
     public static function toHex(int $number): string {
         return dechex($number);
+    }
+
+    /**
+     * @param $number
+     *
+     * @return false|float
+     */
+    public static function floor($number) {
+        return floor($number);
+    }
+
+    /**
+     * @param $number
+     *
+     * @return float
+     */
+    public static function log($number) {
+        return log($number);
     }
 }
