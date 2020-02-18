@@ -10,10 +10,14 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use Exception;
 use InvalidArgumentException;
+use function dechex;
 use function is_float;
 use function is_int;
+use function mt_rand;
 use function number_format;
+use function random_int;
 use function round;
 
 /**
@@ -127,5 +131,33 @@ final class NumberUtil {
     public static function isNumber($var): bool {
         return self::isInteger($var)
             || self::isFloat($var);
+    }
+
+    /**
+     * @param int $min
+     * @param int $max
+     *
+     * @return int
+     * @throws Exception
+     */
+    public static function getRandomNumber(int $min, int $max): int {
+        if (FunctionUtil::exists('random_int')) {
+            try {
+                return random_int($min, $max);
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        return mt_rand($min, $max);
+    }
+
+    /**
+     * @param int $number
+     *
+     * @return string
+     */
+    public static function toHex(int $number): string {
+        return dechex($number);
     }
 }
