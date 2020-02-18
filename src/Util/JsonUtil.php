@@ -24,12 +24,12 @@ use const JSON_ERROR_NONE;
 final class JsonUtil {
     /**
      * @param string $json
-     * @param bool   $asObject
+     * @param bool   $asArray
      *
      * @return mixed
      */
-    public static function parse(string $json, bool $asObject = false) {
-        return json_decode($json, $asObject);
+    public static function parse(string $json, bool $asArray = true) {
+        return json_decode($json, $asArray);
     }
 
     /**
