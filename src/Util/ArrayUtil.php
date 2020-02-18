@@ -416,7 +416,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
      * @return ArrayUtil
      */
     public function pop(): ArrayUtil {
-        array_pop($this->toArray());
+        array_pop($this->data);
 
         return new self($this->toArray());
     }
