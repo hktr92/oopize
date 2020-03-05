@@ -88,9 +88,9 @@ final class VarUtil {
      * @param mixed $var
      * @param bool  $nullable
      *
-     * @return string|null
+     * @return array|null
      */
-    public static function castToArray($var, bool $nullable = false): ?string {
+    public static function castToArray($var, bool $nullable = false): ?array {
         $cast = self::cast($var, self::TYPE_ARRAY);
         if ($nullable && self::isNull($cast)) {
             return null;
