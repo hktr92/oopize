@@ -12,6 +12,7 @@ namespace Oopize\Util;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use function dirname;
 use function is_dir;
 use function rmdir;
 
@@ -65,5 +66,14 @@ final class DirUtil {
             ),
             RecursiveIteratorIterator::CHILD_FIRST
         );
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function getDirectoryName(string $path): string {
+        return dirname($path);
     }
 }

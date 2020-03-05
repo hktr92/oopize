@@ -70,11 +70,17 @@ final class VarUtil {
 
     /**
      * @param mixed $var
+     * @param bool  $nullable
      *
-     * @return string
+     * @return string|null
      */
-    public static function castToString($var): string {
-        return self::cast($var, self::TYPE_STRING);
+    public static function castToString($var, bool $nullable = false): ?string {
+        $cast = self::cast($var, self::TYPE_STRING);
+        if ($nullable && StringUtil::isEmpty($cast)) {
+            return null;
+        }
+
+        return $cast;
     }
 
     /**
