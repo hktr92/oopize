@@ -92,7 +92,7 @@ final class VarUtil {
      */
     public static function castToArray($var, bool $nullable = false): ?string {
         $cast = self::cast($var, self::TYPE_ARRAY);
-        if ($nullable && StringUtil::isEmpty($cast)) {
+        if ($nullable && self::isNull($cast)) {
             return null;
         }
 
