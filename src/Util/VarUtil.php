@@ -24,7 +24,8 @@ final class VarUtil {
         TYPE_STRING = 'string',
         TYPE_INT = 'int',
         TYPE_FLOAT = 'float',
-        TYPE_BOOL = 'bool';
+        TYPE_BOOL = 'bool',
+        TYPE_ARRAY = 'array';
 
     /**
      * @param mixed $var
@@ -84,6 +85,21 @@ final class VarUtil {
     }
 
     /**
+     * @param mixed $var
+     * @param bool  $nullable
+     *
+     * @return string|null
+     */
+    public static function castToArray($var, bool $nullable = false): ?string {
+        $cast = self::cast($var, self::TYPE_ARRAY);
+        if ($nullable && StringUtil::isEmpty($cast)) {
+            return null;
+        }
+
+        return $cast;
+    }
+
+    /**
      * @param mixed  $var
      * @param string $type
      *
@@ -99,6 +115,8 @@ final class VarUtil {
                 return (float)$var;
             case self::TYPE_BOOL:
                 return (bool)$var;
+            case self::TYPE_ARRAY:
+                return (array)$var;
             default:
                 return $var;
         }
