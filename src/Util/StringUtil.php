@@ -58,6 +58,18 @@ final class StringUtil {
     }
 
     /**
+     * @param string $text
+     * @param int    $position
+     *
+     * @return string|null
+     */
+    public function charAt(string $text, int $position = 0): ?string {
+        $charMap = str_split($text);
+
+        return $charMap[$position] ?? null;
+    }
+
+    /**
      * Safely converts the given string to uppercase.
      *
      * @param string      $string
