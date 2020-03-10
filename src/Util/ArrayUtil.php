@@ -17,6 +17,7 @@ use Countable;
 use InvalidArgumentException;
 use IteratorAggregate;
 use JsonException;
+use JsonSerializable;
 use function array_diff;
 use function array_filter;
 use function array_key_exists;
@@ -41,7 +42,7 @@ use const JSON_ERROR_NONE;
  * @package Oopize\Util
  * @since   0.1
  */
-class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
+class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerializable {
     /**
      * @var array
      */
@@ -419,5 +420,12 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable {
         array_pop($this->data);
 
         return new self($this->toArray());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array {
+        return $this->toArray();
     }
 }
