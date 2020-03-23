@@ -102,6 +102,31 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
+     * @param $object
+     *
+     * @return ArrayUtil
+     */
+    public static function fromObject($object): ArrayUtil {
+        $className = ClassUtil::getName($object);
+        $self      = __METHOD__;
+
+        if (false === ClassUtil::hasMethod($object, 'toArray')) {
+            throw new InvalidArgumentException(
+                StringUtil::format(
+                    "Your object instance of %s must implement method '%s::toArray()' in order to use %s.",
+                    [
+                        $className,
+                        $className,
+                        $self,
+                    ]
+                )
+            );
+        }
+
+        return new self($object->toArray());
+    }
+
+    /**
      * @param array $data
      * @param array $expectedKeys
      *
