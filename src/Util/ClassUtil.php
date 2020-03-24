@@ -12,8 +12,10 @@ namespace Oopize\Util;
 
 use Doctrine\Common\Inflector\Inflector;
 use ReflectionClass;
+use ReflectionException;
 use function class_exists;
 use function get_class;
+use function is_string;
 use function method_exists;
 use function property_exists;
 
@@ -173,6 +175,21 @@ final class ClassUtil {
      */
     public static function hasMethod($instance, string $method): bool {
         return method_exists($instance, $method);
+    }
+
+    public static function hasConstant($instanceOrClass, string $constant): bool {
+        if (false === is_string($instanceOrClass)) {
+            $instanceOrClass = self::getName($instanceOrClass);
+        }
+
+        try {
+            $Reflection = new ReflectionClass($instanceOrClass);
+            $constants  = new ArrayUtil($Reflection->getConstants());
+
+            return $constants->getKeys()->contains($constant);
+        } catch (ReflectionException $e) {
+            return false;
+        }
     }
 
     /**
