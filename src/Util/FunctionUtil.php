@@ -12,6 +12,7 @@ namespace Oopize\Util;
 
 use function call_user_func_array;
 use function function_exists;
+use function is_callable;
 
 /**
  * Class FunctionUtil
@@ -26,7 +27,20 @@ final class FunctionUtil {
      * @return mixed
      */
     public static function call($callable, array $parameters = []) {
+        if (false === self::isCallable($callable)) {
+            return null;
+        }
+
         return call_user_func_array($callable, $parameters);
+    }
+
+    /**
+     * @param $callable
+     *
+     * @return bool
+     */
+    public static function isCallable($callable): bool {
+        return is_callable($callable);
     }
 
     /**
