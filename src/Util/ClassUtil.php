@@ -178,17 +178,24 @@ final class ClassUtil {
     }
 
     public static function hasConstant($instanceOrClass, string $constant): bool {
+        return self::getConstants($instanceOrClass)->getKeys()->contains($constant);
+    }
+
+    public static function getConstantValue($instanceOrClass, string $constant) {
+        return self::getConstants($instanceOrClass)->get($constant);
+    }
+
+    public static function getConstants($instanceOrClass) {
         if (false === is_string($instanceOrClass)) {
             $instanceOrClass = self::getName($instanceOrClass);
         }
 
         try {
             $Reflection = new ReflectionClass($instanceOrClass);
-            $constants  = new ArrayUtil($Reflection->getConstants());
 
-            return $constants->getKeys()->contains($constant);
+            return new ArrayUtil($Reflection->getConstants());
         } catch (ReflectionException $e) {
-            return false;
+            return new ArrayUtil;
         }
     }
 
@@ -231,7 +238,6 @@ final class ClassUtil {
             return null;
         }
 
-
-        return $Class->newInstance($args);
+        return $Class->newInstanceArgs($args);
     }
 }
