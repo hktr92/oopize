@@ -22,6 +22,8 @@ use function rmdir;
  * @since   0.2
  */
 final class DirUtil {
+    public const PERM_WRITABLE = 'writable';
+
     /**
      * @param string $path
      *
@@ -75,5 +77,27 @@ final class DirUtil {
      */
     public static function getDirectoryName(string $path): string {
         return dirname($path);
+    }
+
+    /**
+     * TODO: handle more permissions. The idea is to have a safe method to create directories.
+     * @see https://github.com/symfony/filesystem/blob/master/Filesystem.php#L89-L106 for inspiration
+     *
+     * @param string     $directory
+     * @param array|null $opts
+     *
+     * @return bool
+     */
+    public static function create(string $directory, ?array $opts = []): bool {
+        // basic permissions
+        $dirmode = 0644;
+
+        forEach ($opts as $option) {
+            if (self::PERM_WRITABLE === $option) {
+                $dirmode = 0777;
+            }
+        }
+
+        return mkdir($directory, $dirmode, true);
     }
 }
