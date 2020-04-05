@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use function constant;
 use function file;
 use function file_exists;
 use function file_get_contents;
@@ -22,6 +23,8 @@ use function unlink;
  * @since   0.1
  */
 final class FileUtil {
+    const OPTS_APPEND = 'FILE_APPEND';
+
     /**
      * @param string $path
      *
@@ -47,13 +50,16 @@ final class FileUtil {
     }
 
     /**
-     * @param string $path
-     * @param string $contents
+     * @param string     $path
+     * @param string     $contents
+     * @param array|null $opts
      */
     public static function writeContents(string $path, string $contents, ?array $opts = []): void {
         $flags = 0;
         forEach ($opts as $opt => $value) {
-
+            if ($opt === self::OPTS_APPEND && VarUtil::isTrue($value)) {
+                $flags &= constant($opt);
+            }
         }
 
         file_put_contents($path, $contents, $flags);
