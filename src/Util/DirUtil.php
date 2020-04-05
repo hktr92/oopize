@@ -92,8 +92,8 @@ final class DirUtil {
         // basic permissions
         $dirmode = 0644;
 
-        forEach ($opts as $option) {
-            if (self::PERM_WRITABLE === $option) {
+        forEach ($opts as $option => $value) {
+            if (self::PERM_WRITABLE === $option && VarUtil::isTrue($value)) {
                 $dirmode = 0777;
             }
         }

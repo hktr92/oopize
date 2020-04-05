@@ -50,8 +50,13 @@ final class FileUtil {
      * @param string $path
      * @param string $contents
      */
-    public static function writeContents(string $path, string $contents): void {
-        file_put_contents($path, $contents);
+    public static function writeContents(string $path, string $contents, ?array $opts = []): void {
+        $flags = 0;
+        forEach ($opts as $opt => $value) {
+
+        }
+
+        file_put_contents($path, $contents, $flags);
     }
 
     /**

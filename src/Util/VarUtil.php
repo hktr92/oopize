@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use InvalidArgumentException;
 use function gettype;
 use function is_null;
 use function is_object;
@@ -119,6 +120,29 @@ final class VarUtil {
                 return (array)$var;
             default:
                 return $var;
+        }
+    }
+
+    /**
+     * TODO: use PHPUnit-like behavior to test variables output.
+     *
+     * @param $variable
+     *
+     * @return bool
+     */
+    public static function isTrue($variable): bool {
+        switch ($type = self::getType($variable)) {
+            case self::TYPE_BOOL:
+                return true === $variable;
+            case self::TYPE_STRING:
+                return StringUtil::isLength($variable, '>', 0);
+            case self::TYPE_INT:
+            case self::TYPE_FLOAT:
+                return $variable > 0;
+            case self::TYPE_ARRAY:
+                return (new ArrayUtil($variable))->count() > 0;
+            default:
+                throw new InvalidArgumentException("Variable type '{$type}' currently not implemented.");
         }
     }
 }
