@@ -26,6 +26,7 @@ use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_push;
+use function array_reverse;
 use function array_unique;
 use function array_values;
 use function count;
@@ -452,5 +453,9 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      */
     public function jsonSerialize(): array {
         return $this->toArray();
+    }
+
+    public function reverse(?bool $preserveKeys = null): ArrayUtil {
+        return new self(array_reverse($this->toArray(), $preserveKeys));
     }
 }
