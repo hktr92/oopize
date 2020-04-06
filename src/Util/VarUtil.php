@@ -26,6 +26,7 @@ final class VarUtil {
         TYPE_INT = 'int',
         TYPE_FLOAT = 'float',
         TYPE_BOOL = 'bool',
+        TYPE_BOOL_LONG = 'boolean',
         TYPE_ARRAY = 'array';
 
     /**
@@ -115,6 +116,7 @@ final class VarUtil {
             case self::TYPE_FLOAT:
                 return (float)$var;
             case self::TYPE_BOOL:
+            case self::TYPE_BOOL_LONG:
                 return (bool)$var;
             case self::TYPE_ARRAY:
                 return (array)$var;
@@ -133,6 +135,7 @@ final class VarUtil {
     public static function isTrue($variable): bool {
         switch ($type = self::getType($variable)) {
             case self::TYPE_BOOL:
+            case self::TYPE_BOOL_LONG:
                 return true === $variable;
             case self::TYPE_STRING:
                 return StringUtil::isLength($variable, '>', 0);
