@@ -185,11 +185,20 @@ final class ClassUtil {
         return self::getConstants($instanceOrClass)->get($constant);
     }
 
-    public static function getConstants($instanceOrClass) {
+    /**
+     * @param $instanceOrClass
+     *
+     * @return string
+     */
+    public static function getInstanceName($instanceOrClass): string {
         if (false === is_string($instanceOrClass)) {
-            $instanceOrClass = self::getName($instanceOrClass);
+            return self::getName($instanceOrClass);
         }
 
+        return $instanceOrClass;
+    }
+
+    public static function getConstants($instanceOrClass) {
         try {
             $Reflection = new ReflectionClass($instanceOrClass);
 
@@ -239,5 +248,24 @@ final class ClassUtil {
         }
 
         return $Class->newInstanceArgs($args);
+    }
+
+    /**
+     * Tests if an instance or a class name is valid, via voting:
+     * - if has namespace
+     * - if exists
+     *
+     * @param $instanceOrClass
+     *
+     * @return bool
+     */
+    public function isValid($instanceOrClass): bool {
+        try {
+            $Reflection = new ReflectionClass($instanceOrClass);
+
+            return true;
+        } catch (ReflectionException $Exception) {
+            return false;
+        }
     }
 }
