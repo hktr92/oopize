@@ -380,4 +380,19 @@ final class StringUtil {
     public static function isEmpty(string $text): bool {
         return self::isLength($text, '==', 0);
     }
+
+    /**
+     * @param string $text
+     *
+     * @return string
+     */
+    public static function camelToKebab(string $text): string {
+        return self::lowerCase(
+            RegexUtil::replace(
+                $text,
+                '~(?<=\\w)([A-Z])~',
+                '-$1'
+            )
+        );
+    }
 }
