@@ -201,7 +201,7 @@ final class ClassUtil {
 
     public static function getConstants($instanceOrClass) {
         try {
-            $Reflection = new ReflectionClass($instanceOrClass);
+            $Reflection = self::reflect($instanceOrClass);
 
             return new ArrayUtil($Reflection->getConstants());
         } catch (ReflectionException $e) {
@@ -236,7 +236,7 @@ final class ClassUtil {
             return null;
         }
 
-        $Class = new ReflectionClass($class);
+        $Class = self::reflect($class);
 
         if ($Class->isAbstract()) {
             return null;
@@ -262,7 +262,7 @@ final class ClassUtil {
      */
     public static function isValid($instanceOrClass): bool {
         try {
-            new ReflectionClass($instanceOrClass);
+            self::reflect($instanceOrClass);
 
             return true;
         } catch (ReflectionException $Exception) {
@@ -276,5 +276,15 @@ final class ClassUtil {
         }
 
         return is_object($instanceOrClass);
+    }
+
+    /**
+     * @param $instanceOrClass
+     *
+     * @return ReflectionClass
+     * @throws ReflectionException
+     */
+    public static function reflect($instanceOrClass): ReflectionClass {
+        return new ReflectionClass($instanceOrClass);
     }
 }
