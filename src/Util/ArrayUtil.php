@@ -27,6 +27,7 @@ use function array_merge;
 use function array_pop;
 use function array_push;
 use function array_reverse;
+use function array_shift;
 use function array_unique;
 use function array_values;
 use function count;
@@ -137,7 +138,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
         $ret  = [];
         $keys = array_keys($data);
 
-        forEach ($expectedKeys as $key => $value) {
+        foreach ($expectedKeys as $key => $value) {
             if (false === in_array($key, $keys, true)) {
                 $ret[$key] = $data[$key];
 
@@ -424,7 +425,17 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @return array
      */
     public function toArray(): array {
-        return $this->data;
+        $tmp = [];
+
+        foreach ($this->data as $key => $value) {
+            if (ClassUtil::isClass($value) && ClassUtil::hasMethod($value, 'toArray')) {
+                $tmp[$key] = $value->toArray();
+            } else {
+                $tmp[$key] = $value;
+            }
+        }
+
+        return $tmp;
     }
 
     /**
@@ -444,6 +455,12 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      */
     public function pop(): ArrayUtil {
         array_pop($this->data);
+
+        return new self($this->toArray());
+    }
+
+    public function shift(): ArrayUtil {
+        array_shift($this->data);
 
         return new self($this->toArray());
     }

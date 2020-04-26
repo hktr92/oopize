@@ -15,6 +15,7 @@ use ReflectionClass;
 use ReflectionException;
 use function class_exists;
 use function get_class;
+use function is_object;
 use function is_string;
 use function method_exists;
 use function property_exists;
@@ -259,13 +260,21 @@ final class ClassUtil {
      *
      * @return bool
      */
-    public function isValid($instanceOrClass): bool {
+    public static function isValid($instanceOrClass): bool {
         try {
-            $Reflection = new ReflectionClass($instanceOrClass);
+            new ReflectionClass($instanceOrClass);
 
             return true;
         } catch (ReflectionException $Exception) {
             return false;
         }
+    }
+
+    public static function isClass($instanceOrClass): bool {
+        if (is_string($instanceOrClass)) {
+            return class_exists($instanceOrClass);
+        }
+
+        return is_object($instanceOrClass);
     }
 }
