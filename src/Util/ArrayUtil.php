@@ -459,10 +459,20 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
         return new self($this->toArray());
     }
 
-    public function shift(): ArrayUtil {
-        array_shift($this->data);
+    /**
+     * Remove first element from array.
+     *
+     * @param int|null $times How many iterations should be made. Defaults to 1.
+     *
+     * @return ArrayUtil
+     */
+    public function shift(?int $times = 1): ArrayUtil {
+        $data = $this->data;
+        for ($t = 0; $t < $times; $t++) {
+            array_shift($data);
+        }
 
-        return new self($this->toArray());
+        return new self($data);
     }
 
     /**
