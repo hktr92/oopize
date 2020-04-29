@@ -454,9 +454,11 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @return ArrayUtil
      */
     public function pop(): ArrayUtil {
-        array_pop($this->data);
+        $data = $this->data;
 
-        return new self($this->toArray());
+        array_pop($data);
+
+        return new self($data);
     }
 
     /**
