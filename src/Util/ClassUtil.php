@@ -17,7 +17,6 @@ use function class_exists;
 use function get_class;
 use function is_object;
 use function is_string;
-use function method_exists;
 use function property_exists;
 
 /**
@@ -82,6 +81,8 @@ final class ClassUtil {
      * @param object $Entity
      * @param string $field
      * @param mixed  $value
+     *
+     * @throws ReflectionException
      */
     public static function callObjectSetter($Entity, string $field, $value): void {
         self::callSetter($Entity, self::setter($field), $value);
@@ -91,8 +92,14 @@ final class ClassUtil {
      * @param object $object
      * @param string $setter
      * @param mixed  $value
+     *
+     * @throws ReflectionException
      */
     private static function callSetter($object, string $setter, $value) {
+        if (false === self::hasMethod($object, $setter)) {
+            return;
+        }
+
         FunctionUtil::call([$object, $setter], [$value]);
     }
 
@@ -173,9 +180,10 @@ final class ClassUtil {
      * @param string $method
      *
      * @return bool
+     * @throws ReflectionException
      */
     public static function hasMethod($instance, string $method): bool {
-        return method_exists($instance, $method);
+        return self::reflect($instance)->hasMethod($method);
     }
 
     public static function hasConstant($instanceOrClass, string $constant): bool {
@@ -214,13 +222,12 @@ final class ClassUtil {
      * @param string $property
      *
      * @return mixed
+     * @throws ReflectionException
+     *
+     * @deprecated in favor of ClassUtil::getProperty()
      */
     public static function access($instance, string $property) {
-        if (false === self::hasProperty($instance, $property)) {
-            return null;
-        }
-
-        return $instance->{$property};
+        return self::getProperty($instance, $property);
     }
 
     /**
@@ -299,6 +306,7 @@ final class ClassUtil {
      */
     public static function getProperty($instance, string $property) {
         $refl = self::reflect($instance);
+
         if (false === $refl->hasProperty($property)) {
             return null;
         }
