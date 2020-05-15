@@ -38,7 +38,7 @@ final class RegexUtil {
      */
     public static function replaceAll(string $source, array $rules): string {
         $processed = $source;
-        forEach ($rules as $regex => $replacement) {
+        foreach ($rules as $regex => $replacement) {
             $processed = self::replace($source, $regex, $replacement);
         }
 
@@ -56,13 +56,11 @@ final class RegexUtil {
         $matchResult = preg_match($regex, $text, $matches);
 
         if (false === $matchResult) {
-            return [];
+            return ['status' => false, 'matches' => []];
         }
 
         return [
-            'status'  => $matchResult === 1
-                ? true
-                : false,
+            'status'  => $matchResult === 1,
             'matches' => $matches,
         ];
     }

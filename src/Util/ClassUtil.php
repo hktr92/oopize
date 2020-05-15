@@ -287,4 +287,26 @@ final class ClassUtil {
     public static function reflect($instanceOrClass): ReflectionClass {
         return new ReflectionClass($instanceOrClass);
     }
+
+    /**
+     * Safely gets an instance property
+     *
+     * @param object $instance
+     * @param string $property
+     *
+     * @return null|mixed
+     * @throws ReflectionException
+     */
+    public static function getProperty($instance, string $property) {
+        $refl = self::reflect($instance);
+        if (false === $refl->hasProperty($property)) {
+            return null;
+        }
+
+        $prop = $refl->getProperty($property);
+
+        return $prop->isStatic()
+            ? $refl->getStaticPropertyValue($property, null)
+            : $prop->getValue($instance);
+    }
 }
