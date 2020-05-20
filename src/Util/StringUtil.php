@@ -225,7 +225,7 @@ final class StringUtil {
      */
     public static function endsWith(string $text, string $endsWith): bool {
         if (static::isMbstringLoaded()) {
-            return mb_substr($text, -self::length($endsWith), 'UTF-8') === $endsWith;
+            return mb_substr($text, -self::length($endsWith), null, 'UTF-8') === $endsWith;
         }
 
         return substr($text, -self::length($endsWith)) === $endsWith;
