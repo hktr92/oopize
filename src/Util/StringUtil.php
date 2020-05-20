@@ -218,6 +218,20 @@ final class StringUtil {
     }
 
     /**
+     * @param string $text
+     * @param string $endsWith
+     *
+     * @return bool
+     */
+    public static function endsWith(string $text, string $endsWith): bool {
+        if (static::isMbstringLoaded()) {
+            return mb_substr($text, -self::length($endsWith), 'UTF-8') === $endsWith;
+        }
+
+        return substr($text, -self::length($endsWith)) === $endsWith;
+    }
+
+    /**
      * Cuts a given text starting from a position and returns the text.
      *
      * @param string   $text
@@ -356,7 +370,7 @@ final class StringUtil {
      */
     public static function concat(string ...$texts): string {
         $str = '';
-        forEach ($texts as $text) {
+        foreach ($texts as $text) {
             $str .= $text;
         }
 
