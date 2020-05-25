@@ -107,6 +107,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param $object
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public static function fromObject($object): ArrayUtil {
         $className = ClassUtil::getName($object);
@@ -149,6 +150,10 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
         }
 
         return $ret;
+    }
+
+    public static function isArray($array): bool {
+        return is_array($array);
     }
 
     /**
@@ -251,6 +256,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
     /**
      * @return ArrayIterator
+     * @throws \ReflectionException
      */
     public function getIterator(): ArrayIterator {
         return new ArrayIterator($this->toArray());
@@ -286,7 +292,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
         foreach ($this->data as $key => $val) {
             if (isset($other[$key])) {
-                if (is_array($val) && $other[$key]) {
+                if (self::isArray($val) && $other[$key]) {
                     $result->set($key, $this->deepDiff($other[$key]));
                 }
             } else {
@@ -308,7 +314,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
         foreach ($first as $key => $val) {
             if (isset($second[$key])) {
-                if (is_array($val) && $second[$key]) {
+                if (self::isArray($val) && $second[$key]) {
                     $result->set($key, self::diffMulti($val, $second[$key]));
                 }
             } else {
@@ -416,6 +422,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param string $delimiter
      *
      * @return string
+     * @throws \ReflectionException
      */
     public function toString(string $delimiter = ''): string {
         return join($delimiter, $this->toArray());
@@ -423,6 +430,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
     /**
      * @return array
+     * @throws \ReflectionException
      */
     public function toArray(): array {
         $tmp = [];
@@ -478,12 +486,19 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
-     * @inheritDoc
+     * @return array
+     * @throws \ReflectionException
      */
     public function jsonSerialize(): array {
         return $this->toArray();
     }
 
+    /**
+     * @param bool|null $preserveKeys
+     *
+     * @return ArrayUtil
+     * @throws \ReflectionException
+     */
     public function reverse(?bool $preserveKeys = null): ArrayUtil {
         return new self(array_reverse($this->toArray(), $preserveKeys));
     }
