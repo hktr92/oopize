@@ -52,9 +52,10 @@ final class StringUtil {
      * Checks if mbstring extension is loaded.
      *
      * @return bool
+     * @deprecated in favor of Multibyte::isSupported()
      */
     private static function isMbstringLoaded(): bool {
-        return ExtensionUtil::isLoaded('mbstring');
+        return Multibyte::isSupported();
     }
 
     /**
