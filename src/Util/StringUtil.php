@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
+use Doctrine\Inflector\Inflector;
 use function bin2hex;
 use function htmlentities;
 use function implode;
@@ -124,10 +125,6 @@ final class StringUtil {
 
 
     public static function upperFirst(string $string, ?string $encoding = null): string {
-//        if (Multibyte::isSupported()) {
-//            return mb_convert_case($string, MB_CASE_TITLE, $encoding ?? self::$encoding);
-//        }
-
         return ucfirst($string);
     }
 
@@ -422,9 +419,15 @@ final class StringUtil {
         return self::lowerCase(
             RegexUtil::replace(
                 $text,
-                '~(?<=\\w)([A-Z])~',
+                '~(?<=\\w)([A-Z])~u',
                 '-$1'
             )
         );
+    }
+
+    public function kebabToCamel(string $text): string {
+        $text = self::replace($text, ['-' => '_']);
+
+        return (new Inflector)->classify($text);
     }
 }
