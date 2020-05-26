@@ -425,7 +425,7 @@ final class StringUtil {
         );
     }
 
-    public function kebabToCamel(string $text): string {
+    public static function kebabToCamel(string $text): string {
         $text = self::replace($text, ['-' => '_']);
 
         return (new Inflector)->classify($text);
