@@ -14,6 +14,8 @@ use function bin2hex;
 use function htmlentities;
 use function implode;
 use function is_string;
+use function lcfirst;
+use function mb_convert_case;
 use function str_pad;
 use function str_repeat;
 use function str_split;
@@ -23,10 +25,12 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
+use function ucfirst;
 use function ucwords;
 use function version_compare;
 use function vsprintf;
 use const ENT_QUOTES;
+use const MB_CASE_TITLE;
 use const STR_PAD_BOTH;
 
 /**
@@ -116,6 +120,19 @@ final class StringUtil {
         }
 
         return ucwords($string);
+    }
+
+
+    public static function upperFirst(string $string, ?string $encoding = null): string {
+//        if (Multibyte::isSupported()) {
+//            return mb_convert_case($string, MB_CASE_TITLE, $encoding ?? self::$encoding);
+//        }
+
+        return ucfirst($string);
+    }
+
+    public static function lowerFirst(string $string, ?string $encoding = null): string {
+        return lcfirst($string);
     }
 
     /**
