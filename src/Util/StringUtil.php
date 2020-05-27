@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Oopize\Util;
 
-use Doctrine\Inflector\Inflector;
 use function bin2hex;
 use function htmlentities;
 use function implode;
@@ -428,6 +427,9 @@ final class StringUtil {
     public static function kebabToCamel(string $text): string {
         $text = self::replace($text, ['-' => '_']);
 
-        return (new Inflector)->classify($text);
+        return self::replace(
+            ucwords($text, '_-'),
+            [' ' => '', '_' => '', '-' => '']
+        );
     }
 }
