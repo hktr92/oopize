@@ -249,10 +249,12 @@ final class ClassUtil {
             return null;
         }
 
-        $Constructor = $Class->getMethod('__construct');
+        if ($Class->hasMethod('__construct')) {
+            $Constructor = $Class->getMethod('__construct');
 
-        if (false === $Constructor->isPublic()) {
-            return null;
+            if (false === $Constructor->isPublic()) {
+                return null;
+            }
         }
 
         return $Class->newInstanceArgs($args);

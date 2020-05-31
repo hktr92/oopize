@@ -148,4 +148,8 @@ final class VarUtil {
                 throw new InvalidArgumentException("Variable type '{$type}' currently not implemented.");
         }
     }
+
+    public static function isFalse($var): bool {
+        return false === self::isTrue($var);
+    }
 }
