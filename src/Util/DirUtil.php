@@ -33,13 +33,23 @@ final class DirUtil {
         return is_dir($path);
     }
 
+    /**
+     * @param string $path
+     *
+     * @return string|null
+     */
     public static function getRealPath(string $path): ?string {
         return realpath($path)
             ?: null;
     }
 
-    public static function getBaseDirectory(string $path, ?string $suffix = null): string {
-        return basename($path, $suffix);
+    /**
+     * @param string $path
+     *
+     * @return string
+     */
+    public static function getBaseDirectory(string $path): string {
+        return basename($path);
     }
 
     /**
