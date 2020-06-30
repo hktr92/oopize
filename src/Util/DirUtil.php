@@ -33,6 +33,15 @@ final class DirUtil {
         return is_dir($path);
     }
 
+    public static function getRealPath(string $path): ?string {
+        return realpath($path)
+            ?: null;
+    }
+
+    public static function getBaseDirectory(string $path, ?string $suffix = null): string {
+        return basename($path, $suffix);
+    }
+
     /**
      * @param string $path
      * @param bool   $recursive
@@ -92,7 +101,7 @@ final class DirUtil {
         // basic permissions
         $dirmode = 0644;
 
-        forEach ($opts as $option => $value) {
+        foreach ($opts as $option => $value) {
             if (self::PERM_WRITABLE === $option && VarUtil::isTrue($value)) {
                 $dirmode = 0777;
             }

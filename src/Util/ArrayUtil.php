@@ -59,6 +59,14 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
         $this->data = $array;
     }
 
+    public function __clone() {
+        return new self($this->toArray());
+    }
+
+    public function clone(): ArrayUtil {
+        return clone $this;
+    }
+
     /**
      * @param string $text
      * @param string $splitBy
@@ -170,7 +178,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      *                          numeric indexes.
      * @param mixed      $value The value to be kept in memory.
      */
-    public function set($key, $value) {
+    public function set($key, $value): void {
         $this->data[$key] = $value;
     }
 
@@ -266,18 +274,34 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param array $array
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function merge(array $array): ArrayUtil {
-        return new self(array_merge($this->data, $array));
+        $copy = $this->clone()->toArray();
+
+        return new self(
+            array_merge(
+                $copy,
+                $array
+            )
+        );
     }
 
     /**
      * @param array $array
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function diff(array $array): ArrayUtil {
-        return new self(array_diff($this->data, $array));
+        $copy = $this->clone()->toArray();
+
+        return new self(
+            array_diff(
+                $copy,
+                $array
+            )
+        );
     }
 
     /**
@@ -340,9 +364,18 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param object  $bindTo
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function map(Closure $callback, $bindTo): ArrayUtil {
-        $processed = array_map($this->bindCallback($callback, $bindTo), $this->data);
+        $copy = $this->clone();
+
+        // for Let's-speak-like-a-pirate day ;)
+        $copyArr = $copy->toArray();
+
+        $processed = array_map(
+            $copy->bindCallback($callback, $bindTo),
+            $copyArr
+        );
 
         return new self($processed);
     }
@@ -351,12 +384,16 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param Closure $callback
      *
      * @return mixed
+     * @throws \ReflectionException
      */
     public function find(Closure $callback) {
+        $copy    = $this->clone();
+        $copyArr = $copy->toArray();
+
         $processed = new ArrayUtil(
             array_filter(
-                $this->data,
-                $this->bindCallback($callback)
+                $copyArr,
+                $copy->bindCallback($callback)
             )
         );
 
@@ -371,6 +408,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @return ArrayUtil
      */
     public function getValues(): ArrayUtil {
+        // It's OK not to clone this one.
         return new self(array_values($this->data));
     }
 
@@ -392,16 +430,26 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
     /**
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function getUnique(): ArrayUtil {
-        return new self(array_unique($this->data));
+        return new self(
+            array_unique(
+                $this->toArray()
+            )
+        );
     }
 
     /**
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function getKeys(): ArrayUtil {
-        return new self(array_keys($this->data));
+        return new self(
+            array_keys(
+                $this->toArray()
+            )
+        );
     }
 
     /**
@@ -451,18 +499,26 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param object  $bindTo
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function filter(Closure $callback, $bindTo): ArrayUtil {
-        $processed = array_filter($this->data, $this->bindCallback($callback, $bindTo));
+        $copy    = $this->clone();
+        $copyArr = $copy->toArray();
+
+        $processed = array_filter(
+            $copyArr,
+            $copy->bindCallback($callback, $bindTo)
+        );
 
         return new self($processed);
     }
 
     /**
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function pop(): ArrayUtil {
-        $data = $this->data;
+        $data = $this->clone()->toArray();
 
         array_pop($data);
 
@@ -475,9 +531,11 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @param int|null $times How many iterations should be made. Defaults to 1.
      *
      * @return ArrayUtil
+     * @throws \ReflectionException
      */
     public function shift(?int $times = 1): ArrayUtil {
-        $data = $this->data;
+        $data = $this->clone()->toArray();
+
         for ($t = 0; $t < $times; $t++) {
             array_shift($data);
         }
@@ -500,6 +558,31 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @throws \ReflectionException
      */
     public function reverse(?bool $preserveKeys = null): ArrayUtil {
-        return new self(array_reverse($this->toArray(), $preserveKeys));
+        $copy = $this->clone()->toArray();
+
+        return new self(
+            array_reverse(
+                $copy,
+                $preserveKeys
+            )
+        );
+    }
+
+    /**
+     * @param callable $callable
+     *
+     * @return ArrayUtil
+     * @throws \ReflectionException
+     */
+    public function sort(callable $callable): ArrayUtil {
+        if (false === VarUtil::isCallable($callable)) {
+            throw new \RuntimeException("StringUtil: Invalid callable supplied.");
+        }
+
+        $copy = $this->clone()->toArray();
+
+        usort($copy, $callable);
+
+        return new self($copy);
     }
 }

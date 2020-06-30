@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use function gettype;
 use function is_null;
 use function is_object;
+use function is_string;
 
 /**
  * Class VarUtil
@@ -61,8 +62,24 @@ final class VarUtil {
         return is_object($var);
     }
 
+    /**
+     * @param      $var
+     * @param null $syntaxOnly
+     * @param null $callableName
+     *
+     * @return bool
+     */
     public static function isCallable($var, $syntaxOnly = null, &$callableName = null): bool {
         return is_callable($var, $syntaxOnly, $callableName);
+    }
+
+    /**
+     * @param $var
+     *
+     * @return bool
+     */
+    public static function isString($var): bool {
+        return is_string($var);
     }
 
     /**

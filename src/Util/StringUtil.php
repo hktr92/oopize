@@ -68,7 +68,7 @@ final class StringUtil {
      *
      * @return string|null
      */
-    public function charAt(string $text, int $position = 0): ?string {
+    public static function charAt(string $text, int $position = 0): ?string {
         $charMap = str_split($text);
 
         return $charMap[$position] ?? null;
@@ -250,11 +250,12 @@ final class StringUtil {
      *
      * @param string   $text
      * @param int|null $position
+     * @param int|null $limit
      *
      * @return string
      */
-    public static function cut(string $text, int $position = 0): string {
-        return substr($text, $position);
+    public static function cut(string $text, int $position = 0, ?int $limit = null): string {
+        return substr($text, $position, $limit);
     }
 
     /**
