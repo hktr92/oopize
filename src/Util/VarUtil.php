@@ -61,6 +61,10 @@ final class VarUtil {
         return is_object($var);
     }
 
+    public static function isCallable($var, $syntaxOnly = null, &$callableName = null): bool {
+        return is_callable($var, $syntaxOnly, $callableName);
+    }
+
     /**
      * @param mixed  $var
      * @param string $expectedType

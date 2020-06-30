@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/oopize.iml" filepath="$PROJECT_DIR$/.idea/oopize.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../php-ext-oopize/.idea/php-ext-oopize.iml" filepath="$PROJECT_DIR$/../php-ext-oopize/.idea/php-ext-oopize.iml" />
     </modules>
   </component>
 </project>
