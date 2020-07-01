@@ -481,6 +481,17 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @throws \ReflectionException
      */
     public function toArray(): array {
+        return $this->data;
+    }
+
+    /**
+     * Same as {@see \Oopize\Util\ArrayUtil::toArray()}, but applies to array conversion to all classes that
+     * are eligible for this action.
+     *
+     * @return array
+     * @throws \ReflectionException
+     */
+    public function toArrayDeep(): array {
         $tmp = [];
 
         foreach ($this->data as $key => $value) {
