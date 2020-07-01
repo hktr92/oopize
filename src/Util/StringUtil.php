@@ -255,7 +255,7 @@ final class StringUtil {
      * @return string
      */
     public static function cut(string $text, int $position = 0, ?int $limit = null): string {
-        return substr($text, $position, $limit);
+        return substr($text, $position, $limit ?? self::length($text));
     }
 
     /**
