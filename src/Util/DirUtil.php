@@ -119,4 +119,8 @@ final class DirUtil {
 
         return mkdir($directory, $dirmode, true);
     }
+
+    public static function exists(string $path): bool {
+        return null !== self::getRealPath($path);
+    }
 }
