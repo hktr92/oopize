@@ -56,7 +56,7 @@ final class FileUtil {
      */
     public static function writeContents(string $path, string $contents, ?array $opts = []): void {
         $flags = 0;
-        forEach ($opts as $opt => $value) {
+        foreach ($opts as $opt => $value) {
             if ($opt === self::OPTS_APPEND && VarUtil::isTrue($value)) {
                 $flags &= constant($opt);
             }
@@ -72,6 +72,15 @@ final class FileUtil {
      */
     public static function exists(string $path): bool {
         return file_exists($path);
+    }
+
+    /**
+     * @param string $path
+     *
+     * @return bool
+     */
+    public static function isValid(string $path): bool {
+        return is_file($path);
     }
 
     /**

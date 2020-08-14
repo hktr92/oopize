@@ -216,6 +216,13 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
+     * @param int|string $element
+     */
+    public function remove($element): void {
+        $this->offsetUnset($element);
+    }
+
+    /**
      * @param mixed $offset
      *
      * @return bool
