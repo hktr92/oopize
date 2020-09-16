@@ -605,6 +605,6 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     public function reset(array $data = []): void {
-        $this->data = [];
+        $this->data = $data;
     }
 }
