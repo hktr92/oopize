@@ -603,4 +603,8 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
 
         return new self($copy);
     }
+
+    public function reset(array $data = []): void {
+        $this->data = [];
+    }
 }
