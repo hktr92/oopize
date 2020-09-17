@@ -22,6 +22,7 @@ use function array_diff;
 use function array_filter;
 use function array_key_exists;
 use function array_keys;
+use function array_map;
 use function array_merge;
 use function array_pop;
 use function array_push;
@@ -356,32 +357,32 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
-     * @param callable $callback
-     * @param null     $bindTo
+     * @param Closure $callback
+     * @param null    $bindTo
      *
      * @return Closure
      */
-    private function bindCallback($callback, $bindTo = null): Closure {
+    private function bindCallback(Closure $callback, $bindTo = null): Closure {
         return Closure::bind($callback, $bindTo ?? $this);
     }
 
     /**
-     * @param callable    $callback
-     * @param object|null $bindTo
+     * @param Closure $callback
+     * @param object  $bindTo
      *
      * @return ArrayUtil
      * @throws \ReflectionException
      */
-    public function map($callback, $bindTo = null): ArrayUtil {
+    public function map(Closure $callback, $bindTo): ArrayUtil {
         $copy = $this->clone();
 
         // for Let's-speak-like-a-pirate day ;)
         $copyArr = $copy->toArray();
 
-        $processed = [];
-        foreach ($copyArr as $key => $value) {
-            $processed[$key] = $copy->bindCallback($callback($value, $key), $bindTo);
-        }
+        $processed = array_map(
+            $copy->bindCallback($callback, $bindTo),
+            $copyArr
+        );
 
         return new self($processed);
     }
