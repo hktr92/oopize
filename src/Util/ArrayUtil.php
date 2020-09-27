@@ -356,23 +356,23 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
-     * @param Closure $callback
-     * @param null    $bindTo
+     * @param callable $callback
+     * @param null     $bindTo
      *
      * @return Closure
      */
-    private function bindCallback(Closure $callback, $bindTo = null): Closure {
+    private function bindCallback(callable $callback, $bindTo = null): Closure {
         return Closure::bind($callback, $bindTo ?? $this);
     }
 
     /**
-     * @param Closure     $callback
+     * @param callable    $callback
      * @param object|null $bindTo
      *
      * @return ArrayUtil
      * @throws \ReflectionException
      */
-    public function map(Closure $callback, $bindTo = null): ArrayUtil {
+    public function map(callable $callback, $bindTo = null): ArrayUtil {
         $copy = $this->clone();
 
         // for Let's-speak-like-a-pirate day ;)
