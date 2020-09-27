@@ -361,7 +361,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      *
      * @return Closure
      */
-    private function bindCallback(callable $callback, $bindTo = null): Closure {
+    private function bindCallback($callback, $bindTo = null): Closure {
         return Closure::bind($callback, $bindTo ?? $this);
     }
 
@@ -372,7 +372,7 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
      * @return ArrayUtil
      * @throws \ReflectionException
      */
-    public function map(callable $callback, $bindTo = null): ArrayUtil {
+    public function map($callback, $bindTo = null): ArrayUtil {
         $copy = $this->clone();
 
         // for Let's-speak-like-a-pirate day ;)
