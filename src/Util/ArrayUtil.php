@@ -367,22 +367,29 @@ class ArrayUtil implements ArrayAccess, IteratorAggregate, Countable, JsonSerial
     }
 
     /**
-     * @param Closure $callback
-     * @param object  $bindTo
+     * @param Closure     $callback
+     * @param object|null $bindTo
      *
      * @return ArrayUtil
      * @throws \ReflectionException
      */
-    public function map(Closure $callback, $bindTo): ArrayUtil {
+    public function map(Closure $callback, $bindTo = null): ArrayUtil {
         $copy = $this->clone();
 
         // for Let's-speak-like-a-pirate day ;)
         $copyArr = $copy->toArray();
 
-        $processed = array_map(
-            $copy->bindCallback($callback, $bindTo),
-            $copyArr
-        );
+        if (null === $bindTo) {
+            $processed = array_map(
+                $callback,
+                $copyArr
+            );
+        } else {
+            $processed = array_map(
+                $copy->bindCallback($callback, $bindTo),
+                $copyArr
+            );
+        }
 
         return new self($processed);
     }

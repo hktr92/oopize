@@ -15,6 +15,8 @@ use function file;
 use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
+use function is_array;
+use function is_string;
 use function unlink;
 
 /**
@@ -28,13 +30,16 @@ final class FileUtil {
     /**
      * @param string $path
      *
-     * @return false|string
+     * @return string|null
      */
     public static function readContents(string $path): ?string {
         $contents = file_get_contents($path);
 
-        return $contents
-            ?: null;
+        if (!is_string($contents)) {
+            return null;
+        }
+
+        return $contents;
     }
 
     /**
@@ -43,10 +48,13 @@ final class FileUtil {
      * @return ArrayUtil
      */
     public static function readLines(string $file): ArrayUtil {
-        return new ArrayUtil(
-            file($file)
-                ?: []
-        );
+        $contents = file($file);
+
+        if (!is_array($contents)) {
+            $contents = [];
+        }
+
+        return new ArrayUtil($contents);
     }
 
     /**
@@ -58,7 +66,12 @@ final class FileUtil {
         $flags = 0;
         foreach ($opts as $opt => $value) {
             if ($opt === self::OPTS_APPEND && VarUtil::isTrue($value)) {
-                $flags &= constant($opt);
+                $constVal = constant($opt);
+                if (null === $constVal) {
+                    continue;
+                }
+
+                $flags &= $constVal;
             }
         }
 
